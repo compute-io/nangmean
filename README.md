@@ -24,7 +24,7 @@ var nangmean = require( 'compute-nangmean' );
 
 #### nangmean( arr )
 
-Computes the geometric mean over an `array` ignoring non-numeric values.
+Computes the geometric mean ignoring non-numeric values.
 
 ``` javascript
 var data = [ 1, 5, NaN, 2, 3, NaN, 7 ];
