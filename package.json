@@ -25,7 +25,15 @@
   "keywords": [
     "compute.io",
     "compute",
-    "computation"
+    "computation",
+    "mathematics",
+    "math",
+    "statistics",
+    "stats",
+    "mean",
+    "average",
+    "geometric mean",
+    "nan"
   ],
   "bugs": {
     "url": "https://github.com/compute-io/nangmean/issues"
