@@ -10,7 +10,7 @@ var // Expectation library:
 	matrix = require( 'dstructs-matrix' ),
 
 	// Module to be tested:
-	gmean = require( './../lib' );
+	nangmean = require( './../lib' );
 
 
 // VARIABLES //
@@ -21,10 +21,10 @@ var expect = chai.expect,
 
 // TESTS //
 
-describe( 'compute-gmean', function tests() {
+describe( 'compute-nangmean', function tests() {
 
 	it( 'should export a function', function test() {
-		expect( gmean ).to.be.a( 'function' );
+		expect( nangmean ).to.be.a( 'function' );
 	});
 
 	it( 'should throw an error if the first argument is neither array-like or matrix-like', function test() {
@@ -44,7 +44,7 @@ describe( 'compute-gmean', function tests() {
 		}
 		function badValue( value ) {
 			return function() {
-				gmean( value );
+				nangmean( value );
 			};
 		}
 	});
@@ -67,7 +67,7 @@ describe( 'compute-gmean', function tests() {
 		}
 		function badValue( value ) {
 			return function() {
-				gmean( matrix( [2,2] ), {
+				nangmean( matrix( [2,2] ), {
 					'dim': value
 				});
 			};
@@ -85,7 +85,7 @@ describe( 'compute-gmean', function tests() {
 		}
 		function badValue( value ) {
 			return function() {
-				gmean( matrix( [2,2] ), {
+				nangmean( matrix( [2,2] ), {
 					'dtype': value
 				});
 			};
@@ -104,7 +104,7 @@ describe( 'compute-gmean', function tests() {
 		}
 		expected = Math.pow( prod, 1/len );
 
-		assert.closeTo( gmean( data ), expected, 1e-7 );
+		assert.closeTo( nangmean( data ), expected, 1e-7 );
 	});
 
 	it( 'should compute the geometric mean of a typed array', function test() {
@@ -119,7 +119,7 @@ describe( 'compute-gmean', function tests() {
 		}
 		expected = Math.pow( prod, 1/len );
 
-		assert.closeTo( gmean( data ), expected, 1e-7 );
+		assert.closeTo( nangmean( data ), expected, 1e-7 );
 	});
 
 	it( 'should compute the geometric mean using an accessor function', function test() {
@@ -134,7 +134,7 @@ describe( 'compute-gmean', function tests() {
 			{'x':2}
 		];
 
-		actual = gmean( data, {
+		actual = nangmean( data, {
 			'accessor': getValue
 		});
 
@@ -166,7 +166,7 @@ describe( 'compute-gmean', function tests() {
 		mat = matrix( data, [5,5], 'int8' );
 
 		// Default:
-		mu = gmean( mat, {
+		mu = nangmean( mat, {
 			'dtype': 'int8'
 		});
 		expected = '0;6;11;16;21';
@@ -174,7 +174,7 @@ describe( 'compute-gmean', function tests() {
 		assert.strictEqual( mu.toString(), expected, 'default' );
 
 		// Along columns:
-		mu = gmean( mat, {
+		mu = nangmean( mat, {
 			'dim': 2,
 			'dtype': 'int8'
 		});
@@ -183,7 +183,7 @@ describe( 'compute-gmean', function tests() {
 		assert.strictEqual( mu.toString(), expected, 'dim: 2' );
 
 		// Along rows:
-		mu = gmean( mat, {
+		mu = nangmean( mat, {
 			'dim': 1,
 			'dtype': 'int8'
 		});
@@ -206,11 +206,26 @@ describe( 'compute-gmean', function tests() {
 
 		// Row vector:
 		mat = matrix( data, [1,6], 'int8' );
-		assert.closeTo( gmean( mat ), expected, 1e-7 );
+		assert.closeTo( nangmean( mat ), expected, 1e-7 );
 
 		// Column vector:
 		mat = matrix( data, [6,1], 'int8' );
-		assert.closeTo( gmean( mat ), expected, 1e-7 );
+		assert.closeTo( nangmean( mat ), expected, 1e-7 );
+	});
+
+	it( 'should compute the geometric mean of matrices containing NaN', function test() {
+
+		var data, mat, mu, expected;
+
+		data = new Float64Array( [1,2,3,4,5,6,7,8,NaN] );
+		mat = matrix( data, [3,3]);
+
+		mu = nangmean( mat, {
+			'dtype': 'int8'
+		});
+		expected = '1;4;7';
+
+		assert.strictEqual( mu.toString(), expected );
 	});
 
 });
