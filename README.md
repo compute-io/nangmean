@@ -178,18 +178,72 @@ mu = nangmean( matrix( [10,0] ) );
 ## Examples
 
 ``` javascript
-var nangmean = require( 'compute-nangmean' );
+var matrix = require( 'dstructs-matrix' ),
+	nangmean = require( 'compute-nangmean' );
 
-var data = new Array( 1000 );
-for ( var i = 0; i < data.length; i++ ) {
+var data,
+	mat,
+	mu,
+	i;
+
+
+// ----
+// Plain arrays...
+data = new Array( 1000 );
+for ( i = 0; i < data.length; i++ ) {
 	if ( i%5 === 0 ) {
 		data[ i ] = NaN;
 	} else {
 		data[ i ] = Math.random() * 100;
 	}
 }
+mu = nangmean( data );
 
-console.log( nangmean( data ) );
+// ----
+// Object arrays (accessors)...
+function getValue( d ) {
+	return d.x;
+}
+for ( i = 0; i < data.length; i++ ) {
+	data[ i ] = {
+		'x': data[ i ]
+	};
+}
+mu = nangmean( data, {
+	'accessor': getValue
+});
+
+// ----
+// Typed arrays...
+// only Float64Array and Float32Array support NaN
+data = new Float64Array( 1000 );
+for ( i = 0; i < data.length; i++ ) {
+	if ( i%5 === 0 ) {
+		data[ i ] = NaN;
+	} else {
+		data[ i ] = Math.random() * 100;
+	}
+}
+mu = nangmean( data );
+
+// ----
+// Matrices (along rows)...
+mat = matrix( data, [100,10], 'float64' );
+mu = nangmean( mat, {
+	'dim': 1
+});
+
+// ----
+// Matrices (along columns)...
+mu = nangmean( mat, {
+	'dim': 2
+});
+
+// ----
+// Matrices (custom output data type)...
+mu = nangmean( mat, {
+	'dtype': 'uint8'
+});
 ```
 
 To run the example code from the top-level application directory,
