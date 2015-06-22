@@ -10,7 +10,7 @@ var // Expectation library:
 	isnan = require( 'validate.io-nan' ),
 
 	// Validate if a value is numeric:
-	isNumber = require( 'validate.io-number' ),
+	isNumber = require( 'validate.io-number-primitive' ),
 
 	// Module to be tested:
 	nangmean = require( './../lib/accessor.js' );
