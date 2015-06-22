@@ -2,7 +2,7 @@ nangmean
 ===
 [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Coverage Status][coveralls-image]][coveralls-url] [![Dependencies][dependencies-image]][dependencies-url]
 
-> Computes the geometric mean ignoring any values which are not numeric.
+> Computes the geometric mean ignoring any values which are not numeric or encoded as missing values.
 
 
 The [geometric mean](http://en.wikipedia.org/wiki/Geometric_mean) is defined as

@@ -41,6 +41,28 @@ describe( 'validate', function tests() {
 		}
 	});
 
+	it( 'should return an error if provided an encoding option which is not an array', function test() {
+		var values, err;
+
+		values = [
+			'5',
+			5,
+			true,
+			undefined,
+			null,
+			NaN,
+			function(){},
+			{}
+		];
+
+		for ( var i = 0; i < values.length; i++ ) {
+			err = validate( {}, {
+				'encoding': values[ i ]
+			});
+			assert.isTrue( err instanceof TypeError );
+		}
+	});
+
 	it( 'should return an error if provided an accessor which is not a function', function test() {
 		var values, err;
 
@@ -114,6 +136,7 @@ describe( 'validate', function tests() {
 		var err;
 
 		err = validate( {}, {
+			'encoding': [ 999 ],
 			'accessor': function getValue(){},
 			'dim': 2,
 			'dtype': 'int32'

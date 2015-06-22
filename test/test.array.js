@@ -13,7 +13,7 @@ var // Expectation library:
 	isNumber = require( 'validate.io-number' ),
 
 	// Module to be tested:
-	gmean = require( './../lib/array.js' );
+	nangmean = require( './../lib/array.js' );
 
 
 // VARIABLES //
@@ -27,10 +27,10 @@ var expect = chai.expect,
 describe( 'array geometric mean', function tests() {
 
 	it( 'should export a function', function test() {
-		expect( gmean ).to.be.a( 'function' );
+		expect( nangmean ).to.be.a( 'function' );
 	});
 
-	it( 'should compute the geometric mean', function test() {
+	it( 'should compute the geometric mean ignoring non-numeric values', function test() {
 		var data,
 			d,
 			N = 0,
@@ -52,14 +52,39 @@ describe( 'array geometric mean', function tests() {
 		}
 		expected = Math.pow( prod, 1/N );
 
-		assert.closeTo( gmean( data ), expected, 0.0001 );
+		assert.closeTo( nangmean( data, [] ), expected, 0.0001 );
+	});
+
+	it( 'should compute the geometric mean ignoring encoded missing values', function test() {
+		var data,
+			d,
+			N = 0,
+			prod,
+			len,
+			expected;
+
+		data = [ 2, 4, 999, 5, 3, 999, 999, 999, 999, 999, 999, 8, 2 ];
+
+		prod = 1;
+		len = data.length;
+		for ( var i = 0; i < len; i++ ) {
+			d = data[ i ];
+			if ( d === 999 ) {
+				continue;
+			}
+			N += 1;
+			prod *= d;
+		}
+		expected = Math.pow( prod, 1/N );
+
+		assert.closeTo( nangmean( data, [ 999 ] ), expected, 0.0001 );
 	});
 
 	it( 'should return NaN if an input array contains a 0', function test() {
 		var data, mu;
 
 		data = [ 2, 4, 0, 3, 8, 2 ];
-		mu = gmean( data );
+		mu = nangmean( data, [] );
 
 		// Check: mu === NaN
 		assert.isTrue( isnan( mu ) );
@@ -67,7 +92,7 @@ describe( 'array geometric mean', function tests() {
 
 
 	it( 'should return null if provided an empty array', function test() {
-		assert.isNull( gmean( [] ) );
+		assert.isNull( nangmean( [], [] ) );
 	});
 
 });
