@@ -52,7 +52,27 @@ Notes:
 2. If an `array` contains values less than or equal to `0`, the function returns `NaN`.
 3. For arrays exceeding memory constraints, you are encouraged to use streams; see [flow-gmean](https://github.com/flow-io/flow-gmean).
 
-For non-numeric `arrays`, provide an accessor `function` for accessing `array` values.
+If the array or matrix contains missing values encoded by numbers, use the `encoding` option to ensure they do not affect the calculation:
+
+* __encoding__: `array` holding all values which will be regarded as missing values. Default: `[]`.
+
+```
+var data, mu;
+
+data = [ 1, 5, 999, 2, 3, 981, 7 ];
+mu = nangmean( data, {
+	'encoding': [ 981, 999 ]
+});
+// returns ~2.914
+
+data = new Int32Array( data );
+mu = nangmean( data, {
+	'encoding': [ 981, 999 ]
+});
+// returns ~2.914
+```
+
+For object `arrays`, provide an accessor `function` for accessing `array` values.
 
 ``` javascript
 var data = [
@@ -75,7 +95,7 @@ var mu = nangmean( data, {
 // returns ~2.194
 ```
 
-If provided a [`matrix`](https://github.com/dstructs/matrix), the function accepts the following `options`:
+If provided a [`matrix`](https://github.com/dstructs/matrix), the function accepts the following additional `options`:
 
 *	__dim__: dimension along which to compute the [geometric mean](http://en.wikipedia.org/wiki/Geometric_mean). Default: `2` (along the columns).
 *	__dtype__: output [`matrix`](https://github.com/dstructs/matrix) data type. Default: `float64`.
